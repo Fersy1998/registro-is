@@ -1,76 +1,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<form [formGroup]="reactiveForm">
+<div class="container">
+  
 
-<div class="container-fluid">
-  <div class="container align-items-center align-content-center">
-      <div class="
-          col col-12 col-xs-12 col-sm-12
-          align-items-center align-content-center
-        ">
-        <h1>Registro de Usuario</h1>
-      </div>
-      <form [formGroup]="reactiveForm">
-        <div class="row">
-          <div class="col col-12 col-sm-12 col-lg-6" style="margin-top: 5em;">
-            <mat-form-field class="example-full-width input" appearance="fill">
-              <mat-label>Primer Nombre</mat-label>
-              <input matInput placeholder="Primer nombre" type="text" name="name" formControlName="name"  required/><br>
-             
-             
-            </mat-form-field>
-        </div>
-        <div class="col col-12 col-sm-12 col-lg-6">
-            <mat-form-field class="example-full-width input" appearance="fill">
-                <mat-label>Primer Apellido</mat-label>
-                <input matInput placeholder="Ingresa tu primer apellido" type="text" name="lastName" formControlName="lastName" required/><br>
-              
-            </mat-form-field>
-  
-        </div>
-        <div class="col col-12 col-sm-12 col-lg-6">
-            <mat-form-field class="example-full-width input" appearance="fill">
-                <mat-label>Identidad:</mat-label>
-                <input matInput placeholder="Ingresa tu identidad:" type="text" name="ID" formControlName="ID" required/><br>
-              
-            </mat-form-field>
-  
-        </div>
-        <div class="col col-12 col-sm-12 col-lg-6">
-            <mat-form-field class="example-full-width input" appearance="fill">
-                <mat-label>Fecha de nacimiento:</mat-label>
-                <input matInput placeholder="00/00/0000" type="text" name="birthDate" formControlName="birthDate" required/><br>
-              
-            </mat-form-field>
-  
-        </div>
-      
+        <div class="row" style="padding-top:2em">
+          <div class="col col-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12 col-md-12 ">
+            <h1>Registro de Usuario</h1>
+          </div>
         
+          <div class="col col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <h1>Primer Nombre</h1>
+              <input matInput placeholder="Primer nombre" type="text" name="name" formControlName="name"  required/>
+             
+             
+            </mat-form-field>
+          </div>
+          <div class="col col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <h1>Primer Apellido</h1>
+                <input matInput placeholder="Primer apellido" type="text" name="lastName" formControlName="lastName" required/>
+              
+            </mat-form-field>
+  
+          </div>
+          <div class="col col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <h1>Identidad:</h1>
+                <input matInput placeholder="0000-0000-00000" type="text" name="ID" formControlName="ID" required/>
+                <p class="alert alert-danger" *ngIf="reactiveForm.controls['ID'].hasError('minLength')||reactiveForm.controls['ID'].hasError('maxLength')">
+                  El ID debe tener 13 caracteres.
+                </p>
+                <p class="alert alert-danger" *ngIf="reactiveForm.controls['ID'].hasError('pattern')">
+                  Solo puede contener números.
+                </p>
+            </mat-form-field>
+  
+          </div>
+          <div class="col col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <h1>Fecha de nacimiento:</h1>
+                <input matInput placeholder="00/00/0000" type="date" name="birthDate" formControlName="birthDate" required/>
+                
+            </mat-form-field>
+  
+          </div>
     
-        <div class="col col-12 col-sm-12 col-lg-6">
-            <mat-form-field class="example-full-width input" appearance="fill">
-              <mat-label>Correo Electrónico</mat-label>
+          <div class="col col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <h1>Correo Electrónico</h1>
               <input matInput type="email" placeholder="Ejem. Nombre@gmail.com" formControlName="email" class="form-control"
                required/>
-        
+               <p class="alert alert-danger" *ngIf="reactiveForm.controls['email'].hasError('pattern')">
+                Ingrese un correo válido.
+              </p>
              
             </mat-form-field>
-        </div>
+          </div>
         
-        <div class="col col-12 col-sm-12 col-lg-6">
-            <input class="input-file" (change)="capturarFile($event)" type="file" accept="image/*">
-        </div>
+          <div class="col col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <h1>Foto:</h1>
+              <input class="input-file" (change)="capturarFile($event)" type="file" accept="image/*">
+          </div>
        
-    </div>
-        
-    <div class="row">
-
-
-        <div class="col col-12 col-sm-12 col-lg-6" style="text-align: center;">
-          <button id="boton" mat-raised-button color="primary" type="button" [disabled]="reactiveForm.invalid" (click)="signUp()">
-            Registrarme
-          </button>
-        </div>
-       
-     
-  </div>
-</form>
+        </div>    
 </div>
+<div style="text-align: center;">
+  <button id="boton" mat-raised-button color="primary" type="button" [disabled]="reactiveForm.invalid" (click)="signUp()">
+    Registrarme
+  </button>   
+
+</div>
+</form>

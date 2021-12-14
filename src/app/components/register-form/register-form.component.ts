@@ -13,9 +13,7 @@ import Swal from 'sweetalert2';
 
 export class RegisterFormComponent{
   
-  public archivos: any = [];
   public image = '';
-  
   public body = {};
   reactiveForm: FormGroup;
   
@@ -27,7 +25,7 @@ constructor(private formBuilder: FormBuilder, private loginService:LoginService,
     name: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     email: new FormControl('',[Validators.required, Validators.pattern('^[^@]+@[^@]+\.[a-zA-Z]{2,}$')]),
-    ID: new FormControl('', Validators.required),
+    ID: new FormControl('', [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern('^[0-9]+$')]),
     birthDate: new FormControl('', Validators.required)
     
   });
@@ -35,18 +33,21 @@ constructor(private formBuilder: FormBuilder, private loginService:LoginService,
   ngOnInit(): void {
   }
   subirImagen(id:any){
+  /*
+    const formData = new FormData();
+    formData.append('file', this.image);
+    formData.append('id', id);*/
+    const formData = new FormData();
+    formData.append('file',  this.image);
+    formData.append('id', id)
+   
     try {
       this.loading = true;
-      this.body = { 
-        file: this.image,
-        id: id
-        }
-      this.loginService.subir(this.body)
+      
+      this.loginService.subir(formData)
         .subscribe(res => {
           this.loading = false;
-          console.log("Esto se envia: ", this.image);
-          Swal.fire('¡Bien!', res.message, 'success');
-          this.router.navigateByUrl('/paciente/perfil');
+          Swal.fire('¡Imagen subida!', res.message, 'success');
           console.log('Respuesta del servidor', res);
 
         }, () => {
@@ -67,14 +68,14 @@ constructor(private formBuilder: FormBuilder, private loginService:LoginService,
         data => {
           if (data._err) {
             Swal.fire('Ups', data.message, 'error');
-            this.router.navigate(['/']);
           } else {
             console.log(data);
-            Swal.fire('¡Bien!', 'Te hemos enviado correo para validar tu cuenta', 'success');
-            this.subirImagen(data.items._id);
+            Swal.fire('¡Ya casi!', 'Te hemos enviado correo para validar tu cuenta', 'success');
+            console.log(data._id);
+            this.subirImagen(data._id);
           }
         },
-        error => { Swal.fire('¡Rayos!', 'Estamos problemas con el servidor', 'error');
+        error => { Swal.fire('Error', 'Tenemos problemas con el servidor', 'error');
         console.log(error); }
       )
     console.log(JSON.stringify(this.reactiveForm.value));
@@ -82,36 +83,9 @@ constructor(private formBuilder: FormBuilder, private loginService:LoginService,
     
   
   capturarFile(event: any) {
-    const archivoCapturado = event.target.files[0]
-    this.extraerBase64(archivoCapturado).then((imagen: any) => {
-      this.image = imagen.base;
-    })
-    this.archivos.push(this.image);
-  console.log(this.archivos);
+    this.image=event.target.files[0]
+    
 }
-
-
-extraerBase64 = async ($event: any) => new Promise((resolve) => {
-  try {
-    const unsafeImg = window.URL.createObjectURL($event);
-    const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
-    const reader = new FileReader();
-    reader.readAsDataURL($event);
-    reader.onload = () => {
-      resolve({
-        base: reader.result
-      });
-    };
-    reader.onerror = error => {
-      resolve({
-        base: null
-      });
-    };
-    return resolve;
-  } catch (e) {
-    return null;
-  }
-})
 
 }
 
