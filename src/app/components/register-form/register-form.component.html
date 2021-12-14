@@ -1,5 +1,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<form [formGroup]="reactiveForm">
+<div style="width: 100%; padding-left: 20%;" *ngIf=correcto>
+  <h3>Imagen subida con éxito :3</h3>
+  URL: {{imagenSubida}}
+  <img src="{{imagenSubida}}" alt="" class="img-fluid">
+
+
+</div>
+<form [formGroup]="reactiveForm" *ngIf=!correcto>
 <div class="container">
   
 
@@ -27,6 +34,7 @@
           <div class="col col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
             <mat-form-field class="example-full-width" appearance="fill">
                 <h1>Identidad:</h1>
+                Asegúrese de escribir 13 carcteres, el botón resgistrar estará deshabilitado si no es así.
                 <input matInput placeholder="0000-0000-00000" type="text" name="ID" formControlName="ID" required/>
                 <p class="alert alert-danger" *ngIf="reactiveForm.controls['ID'].hasError('minLength')||reactiveForm.controls['ID'].hasError('maxLength')">
                   El ID debe tener 13 caracteres.

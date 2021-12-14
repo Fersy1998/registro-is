@@ -12,11 +12,11 @@ import Swal from 'sweetalert2';
 })
 
 export class RegisterFormComponent{
-  
+  correcto:boolean=false;
   public image = '';
   public body = {};
   reactiveForm: FormGroup;
-  
+  imagenSubida:any;
   public loading!: boolean;
   hide=true;
   hideC=true;
@@ -49,7 +49,8 @@ constructor(private formBuilder: FormBuilder, private loginService:LoginService,
           this.loading = false;
           Swal.fire('¡Imagen subida!', res.message, 'success');
           console.log('Respuesta del servidor', res);
-
+          this.imagenSubida=res.profileImageUrl;
+          this.correcto=true;
         }, () => {
           this.loading = false;
           alert('Error');
